@@ -1,54 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>JennyCreation Inventory</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Tailwind CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>@yield('title', 'JennyCreation')</title>
 
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    {{-- CSS (Bootstrap for now – responsive by default) --}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    @stack('styles')
 </head>
+<body class="bg-light">
 
-<body class="bg-gray-100 min-h-screen">
-
-    <!-- NAVBAR -->
-    <nav class="bg-white shadow px-6 py-4 flex gap-6">
-        <a href="{{ route('inventory.dashboard') }}" class="font-semibold text-gray-700 hover:text-blue-600">Dashboard</a>
-        <a href="{{ route('inventory.categories') }}" class="text-gray-700 hover:text-blue-600">Categories</a>
-        <a href="{{ route('inventory.products') }}" class="text-gray-700 hover:text-blue-600">Products</a>
-        <a href="{{ route('inventory.stock') }}" class="text-gray-700 hover:text-blue-600">Stock</a>
-        <a href="{{ route('inventory.movements') }}" class="text-gray-700 hover:text-blue-600">Movements</a>
+    {{-- Top Navbar --}}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">JennyCreation</a>
+        </div>
     </nav>
 
-    <!-- PAGE CONTENT -->
-    <main class="max-w-6xl mx-auto p-6">
+    {{-- Main Content --}}
+    <main class="container-fluid py-3">
         @yield('content')
     </main>
-    <script>
-async function ajaxForm(form, onSuccess) {
-    const formData = new FormData(form);
 
-    const response = await fetch(form.action, {
-        method: form.method || 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
-        },
-        body: formData
-    });
+    {{-- JS --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    const data = await response.json();
-
-    if (!response.ok) {
-        throw data;
-    }
-
-    onSuccess(data);
-}
-</script>
-
+    @stack('scripts')
 </body>
 </html>
