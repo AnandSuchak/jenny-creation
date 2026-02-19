@@ -24,11 +24,10 @@ class StoreProductRequest extends FormRequest
     }
 
     protected function prepareForValidation(): void
-    {
-        if ($this->has('slug')) {
-            $this->merge([
-                'slug' => strtolower(trim($this->slug)),
-            ]);
-        }
-    }
+{
+    $this->merge([
+        'slug' => $this->slug ? strtolower(trim($this->slug)) : null
+    ]);
+}
+
 }

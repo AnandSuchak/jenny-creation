@@ -24,7 +24,7 @@
                         <th>Category</th>
                         <th>SKU</th>
                         <th>Status</th>
-                        <th width="150">Actions</th>
+                        <th width="250">Actions</th>
                     </tr>
                 </thead>
                 <tbody id="productTableBody">
@@ -46,6 +46,8 @@
 
 <!-- Edit Modal -->
 @include('inventory.products._edit_modal')
+
+@include('inventory.products._variants_modal')
 
 @endsection
 

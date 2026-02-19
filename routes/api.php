@@ -40,10 +40,14 @@ Route::prefix('inventory')->group(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | VARIANT (we will expand later)
+    | VARIANT CRUD
     |--------------------------------------------------------------------------
     */
+    Route::get('/variants', [VariantController::class, 'index']);
     Route::post('/variants', [VariantController::class, 'store']);
+    Route::put('/variants/{variant}', [VariantController::class, 'update']);
+    Route::delete('/variants/{variant}', [VariantController::class, 'destroy']);
+    Route::post('/variants/{id}/restore', [VariantController::class, 'restore']);
 
     /*
     |--------------------------------------------------------------------------

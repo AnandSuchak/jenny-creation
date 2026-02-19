@@ -5,7 +5,7 @@ namespace App\Http\Requests\Inventory;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreVariantRequest extends FormRequest
+class UpdateVariantRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -19,7 +19,13 @@ class StoreVariantRequest extends FormRequest
             'variant_name'  => ['required', 'string', 'max:255'],
             'cost_price'    => ['nullable', 'numeric', 'min:0'],
             'selling_price' => ['required', 'numeric', 'min:0'],
-            'barcode'       => ['nullable', 'string', 'max:255', 'unique:product_variants,barcode'],
+            'barcode'       => [
+                'nullable',
+                'string',
+                'max:255',
+                Rule::unique('product_variants', 'barcode')
+                    ->ignore($this->route('variant'))
+            ],
             'is_active'     => ['nullable', 'boolean'],
         ];
     }
