@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->string('filter_tag')->nullable(); // box, puttha, etc
             $table->boolean('is_active')->default(true);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

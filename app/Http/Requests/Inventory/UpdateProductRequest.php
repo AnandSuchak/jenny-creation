@@ -3,8 +3,9 @@
 namespace App\Http\Requests\Inventory;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class StoreProductRequest extends FormRequest
+class UpdateProductRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -16,19 +17,25 @@ class StoreProductRequest extends FormRequest
         return [
             'category_id' => ['required', 'exists:categories,id'],
             'name'        => ['required', 'string', 'max:255'],
-            'slug'        => ['nullable', 'string', 'max:255', 'unique:products,slug'],
+            'slug'        => [
+                'nullable',
+                'string',
+                'max:255',
+                Rule::unique('products', 'slug')
+    ->ignore($this->route('product')->id)
+    ->whereNotNull('slug'),
+            ],
             'description' => ['nullable', 'string'],
             'image'       => ['nullable', 'string'],
             'is_active'   => ['nullable', 'boolean'],
         ];
     }
 
-    protected function prepareForValidation(): void
-    {
-        if ($this->has('slug')) {
-            $this->merge([
-                'slug' => strtolower(trim($this->slug)),
-            ]);
-        }
-    }
+   protected function prepareForValidation(): void
+{
+    $this->merge([
+        'slug' => $this->slug ? strtolower(trim($this->slug)) : null,
+    ]);
+}
+
 }

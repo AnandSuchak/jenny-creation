@@ -6,23 +6,40 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-     public function up(): void
+    public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
+
             $table->id();
+
+            // 🔗 Relationship: Product → Category
             $table->foreignId('category_id')
                   ->constrained()
                   ->cascadeOnUpdate()
                   ->restrictOnDelete();
 
+            // Core fields
             $table->string('name');
-            $table->string('image_path')->nullable();
+
+            // Slug optional but unique if present
+            $table->string('slug')->nullable()->unique();
+
+            // Auto-generated SKU (required + unique)
+            $table->string('sku')->unique();
+
+            // Single image for now
+            $table->string('image')->nullable();
+
+            // Optional description
             $table->text('description')->nullable();
+
             $table->boolean('is_active')->default(true);
+
             $table->timestamps();
+            $table->softDeletes();
+
+            // Index for faster queries
+            $table->index('category_id');
         });
     }
 
